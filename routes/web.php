@@ -1,8 +1,6 @@
 <?php
 
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +13,6 @@ use App\Http\Controllers\TaskController;
 |
 */
 
-Route::get('/', [TaskController::class, 'index']);
+Route::get('/', fn () => inertia('Tasks'));
+
+Route::get('/projects', fn () => inertia('Projects'));

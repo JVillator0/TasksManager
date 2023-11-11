@@ -1,0 +1,34 @@
+{
+  // PHP CS Fixer: junstyle.php-cs-fixer
+  "php-cs-fixer.executablePath": "${workspaceRoot}/vendor/bin/php-cs-fixer",
+  "php-cs-fixer.config": ".php-cs-fixer.php;.php-cs-fixer.dist.php;.php_cs;.php_cs.dist",
+  "php-cs-fixer.pathMode": "override",
+  "php-cs-fixer.onsave": true,
+  "php-cs-fixer.allowRisky": true,
+
+  // Namespace Resolver: MehediDracula.php-namespace-resolver
+  "namespaceResolver.exclude": "**/node_modules/**,**/vendor/**",
+  "namespaceResolver.showMessageOnStatusBar": true,
+  "namespaceResolver.sortOnSave": true,
+  "namespaceResolver.sortNatural": true,
+
+  // PHP Intelephense: bmewburn.vscode-intelephense-client
+  "intelephense.files.exclude": [
+    "**/vendor/composer/autoload_classmap.php",
+    "**/vendor/composer/autoload_static.php",
+    "**/vendor/fakerphp/faker/src/Faker/Provider/nl_BE/Text.php"
+  ],
+  "intelephense.environment.phpVersion": "8.2",
+  "php.validate.enable": true,
+
+  "php.suggest.basic": true,
+  "php.validate.run": "onSave",
+
+  // General
+  "[php]": {
+    "editor.defaultFormatter": "junstyle.php-cs-fixer",
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "editor.tabSize": 4
+  },
+}

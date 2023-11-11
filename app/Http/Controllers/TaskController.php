@@ -2,21 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
 use Illuminate\Http\Request;
+use App\Models\Task;
+use App\Http\Resources\TaskResource;
+use App\Http\Requests\TaskRequest;
 
 class TaskController extends Controller
 {
     public function index(Request $request)
     {
         $tasks = Task::query()
-            ->when($request->has('project_id'), fn ($query) => $query->where('project_id', $request->project_id))
+            ->byProject($request->project_id)
+            ->with('project')
+            ->orderBy('priority')
             ->get();
 
-        info($tasks);
+        return TaskResource::collection($tasks);
+    }
 
-        return inertia('Tasks', [
-            'tasks' => $tasks,
-        ]);
+    public function store(TaskRequest $request)
+    {
+        $nextPriority = Task::query()
+            ->byProject($request->project_id)
+            ->max('priority') + 1;
+
+        $task = Task::create(array_merge(
+            $request->validated(),
+            ['priority' => $nextPriority]
+        ));
+
+        return new TaskResource($task);
+    }
+
+    public function show(Task $task)
+    {
+        return  new TaskResource($task);
+    }
+
+    public function update(TaskRequest $request, Task $task)
+    {
+        $task->update($request->validated());
+
+        return new TaskResource($task);
+    }
+
+    public function destroy(Task $task)
+    {
+        $task->delete();
+
+        return null;
     }
 }
