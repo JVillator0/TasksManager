@@ -12,7 +12,8 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $tasks = Task::query()
-            ->byProject($request->project_id)
+            ->whereCompleted(false)
+            ->byProject($request->input('project_id'))
             ->with('project')
             ->orderBy('priority')
             ->get();
@@ -42,6 +43,13 @@ class TaskController extends Controller
     public function update(TaskRequest $request, Task $task)
     {
         $task->update($request->validated());
+
+        return new TaskResource($task);
+    }
+
+    public function completed(Task $task)
+    {
+        $task->update(['completed' => true]);
 
         return new TaskResource($task);
     }

@@ -16,5 +16,6 @@ use App\Http\Controllers\ProjectController;
 */
 
 Route::apiResource('/tasks', TaskController::class);
+Route::patch('/tasks/{task}/completed', [TaskController::class, 'completed']);
 
 Route::apiResource('/projects', ProjectController::class);

@@ -63,8 +63,8 @@ export default {
     Modal,
   },
   props: {
-    project: {
-      type: Object,
+    projectId: {
+      type: Number,
       required: true,
     },
   },
@@ -79,7 +79,7 @@ export default {
       try {
         await axios.post(`/api/tasks`, {
           ...this.task,
-          project_id: this.project.id,
+          project_id: this.$props.projectId,
         });
 
         this.showModal = false;

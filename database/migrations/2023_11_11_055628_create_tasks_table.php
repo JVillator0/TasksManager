@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('description');
             $table->integer('priority');
+            $table->boolean('completed')->default(false);
             $table->foreignId('project_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

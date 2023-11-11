@@ -13,11 +13,13 @@ class Task extends Model
         'name',
         'description',
         'priority',
+        'completed',
         'project_id',
     ];
 
     protected $casts = [
         'priority' => 'integer',
+        'completed' => 'boolean',
     ];
 
     public function project()

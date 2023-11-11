@@ -61,13 +61,12 @@
       </div>
       <div class="flex flex-col w-full mt-5">
         <span class="mb-2 text-xl">Projects</span>
-        <span v-if="projects.length === 0" class="text-sm text-gray-400">
-          No projects found
-        </span>
-        <span v-else class="text-xs text-gray-400">
+        <span class="text-xs text-gray-400">
           Double click to edit, press enter to save or esc to cancel
         </span>
-        <div class="w-full p-2 mt-5 overflow-y-auto bg-gray-100 rounded-md h-80">
+        <div
+          class="w-full p-2 mt-5 overflow-y-auto bg-gray-100 rounded-md h-80"
+        >
           <div
             v-for="project in projects"
             :key="project.id"
@@ -78,7 +77,10 @@
               class="w-full pl-3 mr-2 text-sm font-semibold cursor-pointer"
               @dblclick="selectProject(project)"
             >
-              {{ project.name }} <span class="text-xs text-gray-400">({{ project.tasks_count }})</span>
+              {{ project.name }}
+              <span class="text-xs text-gray-400"
+                >({{ project.tasks_count }})</span
+              >
             </h2>
             <input
               v-else
@@ -110,6 +112,9 @@
                 />
               </svg>
             </button>
+          </div>
+          <div v-if="projects.length === 0" class="w-full mt-5 text-sm text-center text-gray-400">
+            No projects found
           </div>
         </div>
       </div>
@@ -161,7 +166,7 @@ export default {
         this.project = {};
         await this.fetchProjects();
 
-        // alert("Project added");
+        alert("Project added");
       } catch (error) {
         console.log(error);
         alert("Error adding project");
