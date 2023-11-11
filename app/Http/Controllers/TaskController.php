@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Http\Resources\TaskResource;
 use App\Http\Requests\TaskRequest;
+use App\Http\Requests\TaskReorderRequest;
 
 class TaskController extends Controller
 {
     public function index(Request $request)
     {
         $tasks = Task::query()
-            ->whereCompleted(false)
             ->byProject($request->input('project_id'))
             ->with('project')
             ->orderBy('priority')
@@ -47,11 +47,22 @@ class TaskController extends Controller
         return new TaskResource($task);
     }
 
-    public function completed(Task $task)
+    public function toggle(Task $task)
     {
-        $task->update(['completed' => true]);
+        $task->update(['completed' => ! $task->completed]);
 
         return new TaskResource($task);
+    }
+
+    public function reorder(TaskReorderRequest $request)
+    {
+        $tasks = $request->input('tasks');
+
+        foreach ($tasks as $task) {
+            Task::where('id', $task['id'])->update(['priority' => $task['priority']]);
+        }
+
+        return null;
     }
 
     public function destroy(Task $task)

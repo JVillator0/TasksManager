@@ -23,7 +23,7 @@
       :showModal="showModal"
       title="Add New Task"
       @close="showModal = false"
-      @accept="addTask"
+      @accept="add"
     >
       <div class="flex flex-col">
         <div class="w-full">
@@ -75,7 +75,7 @@ export default {
     };
   },
   methods: {
-    async addTask() {
+    async add() {
       try {
         await axios.post(`/api/tasks`, {
           ...this.task,

@@ -40,7 +40,7 @@
           placeholder="Project name"
         />
         <button
-          @click="addProject"
+          @click="add"
           class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-400"
         >
           <svg
@@ -75,7 +75,7 @@
             <h2
               v-if="!project.editing"
               class="w-full pl-3 mr-2 text-sm font-semibold cursor-pointer"
-              @dblclick="selectProject(project)"
+              @dblclick="select(project)"
             >
               {{ project.name }}
               <span class="text-xs text-gray-400"
@@ -91,10 +91,10 @@
               v-model="project.name"
               placeholder="Project name"
               @keyup.enter="update(project)"
-              @keydown.esc="selectProject(null)"
+              @keydown.esc="select(null)"
             />
             <button
-              @click="removeProject(project.id)"
+              @click="remove(project.id)"
               class="p-1 text-white bg-red-500 rounded-md hover:bg-red-400"
             >
               <svg
@@ -138,17 +138,10 @@ export default {
     };
   },
   async mounted() {
-    await this.fetchProjects();
+    await this.fetch();
   },
   methods: {
-    async selectProject(project) {
-      if (project) {
-        project.editing = true;
-      } else {
-        await this.fetchProjects();
-      }
-    },
-    async fetchProjects() {
+    async fetch() {
       try {
         const { data } = await axios.get("/api/projects");
         this.projects = data.data;
@@ -157,14 +150,14 @@ export default {
         console.error("Error fetching projects");
       }
     },
-    async addProject() {
+    async add() {
       try {
         await axios.post(`/api/projects`, {
           ...this.project,
         });
 
         this.project = {};
-        await this.fetchProjects();
+        await this.fetch();
 
         alert("Project added");
       } catch (error) {
@@ -178,7 +171,7 @@ export default {
           ...project,
         });
 
-        await this.fetchProjects();
+        await this.fetch();
 
         alert("Project updated");
       } catch (error) {
@@ -186,16 +179,23 @@ export default {
         alert("Error updating project");
       }
     },
-    async removeProject(id) {
+    async remove(id) {
       try {
         await axios.delete(`/api/projects/${id}`);
 
-        await this.fetchProjects();
+        await this.fetch();
 
         alert("Project removed");
       } catch (error) {
         console.log(error);
         alert("Error removing project");
+      }
+    },
+    async select(project) {
+      if (project) {
+        project.editing = true;
+      } else {
+        await this.fetch();
       }
     },
   },

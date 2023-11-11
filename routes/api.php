@@ -15,7 +15,8 @@ use App\Http\Controllers\ProjectController;
 |
 */
 
+Route::patch('/tasks/reorder', [TaskController::class, 'reorder']);
 Route::apiResource('/tasks', TaskController::class);
-Route::patch('/tasks/{task}/completed', [TaskController::class, 'completed']);
+Route::patch('/tasks/{task}/toggle', [TaskController::class, 'toggle']);
 
 Route::apiResource('/projects', ProjectController::class);
